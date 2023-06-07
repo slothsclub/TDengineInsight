@@ -1,0 +1,3 @@
+[submodule "Web"]
+	path = web
+	url = git@github.com:slothsclub/tdengineinsight-web.git
