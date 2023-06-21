@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/perf")
+@RequestMapping("/tdengine/perf")
 @Slf4j
 public class PerfController {
     @Autowired

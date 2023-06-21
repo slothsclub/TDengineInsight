@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/instance")
+@RequestMapping("/app/instance")
 @Slf4j
 public class InstanceController {
 
