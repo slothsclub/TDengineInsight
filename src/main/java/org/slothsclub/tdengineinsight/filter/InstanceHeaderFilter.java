@@ -5,7 +5,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.slothsclub.tdengineinsight.bind.ErrorCode;
+import org.slothsclub.tdengineinsight.bind.ResponseCode;
 import org.slothsclub.tdengineinsight.bind.Result;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,6 +38,6 @@ public class InstanceHeaderFilter implements Filter {
         HttpServletResponse resp = ((HttpServletResponse) response);
         resp.setStatus(HttpStatus.BAD_REQUEST.value());
         resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(new Result(ErrorCode.BAD_REQUEST, message, null)));
+        response.getWriter().write(objectMapper.writeValueAsString(new Result<String>(ResponseCode.BAD_REQUEST, message, null)));
     }
 }
