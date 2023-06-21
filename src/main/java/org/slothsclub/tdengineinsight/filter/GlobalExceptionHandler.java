@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -25,7 +27,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ResponseBody
     public Result<String> handleNoHandlerFound(NoHandlerFoundException e, WebRequest request) {
-        return Result.fail(ResponseCode.INTERNAL_SERVER_ERROR, String.format("%s Not Found", request.getContextPath()));
+        return Result.fail(HttpStatus.NOT_FOUND.name(), String.format("%s Not Found", request.getContextPath()));
     }
 }
