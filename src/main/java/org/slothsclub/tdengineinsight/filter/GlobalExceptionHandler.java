@@ -3,6 +3,7 @@ package org.slothsclub.tdengineinsight.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.slothsclub.tdengineinsight.bind.ResponseCode;
 import org.slothsclub.tdengineinsight.bind.Result;
+import org.slothsclub.tdengineinsight.exception.DataSourceNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,12 @@ public class GlobalExceptionHandler {
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining("; "));
         return Result.fail(HttpStatus.UNPROCESSABLE_ENTITY.name(), errorMessage);
+    }
+
+    @ExceptionHandler(DataSourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    protected Result<String> handleDataSourceNotFoundException(RuntimeException ex, WebRequest request) {
+        return Result.fail(ResponseCode.DATASOURCE_NOT_FOUND, ex.getMessage());
     }
 }

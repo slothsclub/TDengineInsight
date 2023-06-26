@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slothsclub.tdengineinsight.config.DynamicDataSource;
+import org.slothsclub.tdengineinsight.exception.DataSourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,7 @@ public class DynamicDataSourceAspect {
 
     private void switchDataSource(String key) {
         if (!dynamicDataSource.hasInstance(key)) {
-            log.debug("======> DataSource doesn't exist, use default DataSource");
+            throw new DataSourceNotFoundException("The data source with id " + key + " does not exist, did you forget to initialize it?");
         } else {
             dynamicDataSource.setCurrent(key);
             log.debug("======> Switch DataSource to {}", dynamicDataSource.getCurrent());

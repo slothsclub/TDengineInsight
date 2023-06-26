@@ -9,4 +9,5 @@ public class ResponseCode {
     public static final String FAILED = "FAILED";
     public static final String BAD_REQUEST = "BAD_REQUEST";
     public static final String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";
+    public static final String DATASOURCE_NOT_FOUND = "DATASOURCE_NOT_FOUND";
 }
