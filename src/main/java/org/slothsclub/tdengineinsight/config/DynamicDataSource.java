@@ -17,8 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DynamicDataSource {
     @Value("${datasource.sqlite.data.dir}")
     String sqliteDataDir;
-    private final static String dbFile = "tdengineinsight.db";
-    private final static String dbName = "tdengineinsight";
+    public final static String dbFile = "tdengineinsight.db";
+    public final static String dbName = "tdengineinsight";
+    public final static String driverClassName = "com.taosdata.jdbc.rs.RestfulDriver";
 
     private final ThreadLocal<String> current = new ThreadLocal<>();
     private final Map<Object, Object> dataSources = new ConcurrentHashMap<>();
