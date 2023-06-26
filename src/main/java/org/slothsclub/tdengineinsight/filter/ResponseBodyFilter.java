@@ -13,6 +13,8 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.Objects;
+
 
 @RestControllerAdvice
 @Slf4j
@@ -28,6 +30,9 @@ public class ResponseBodyFilter implements ResponseBodyAdvice<Object> {
     @Override
     @SneakyThrows
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+        if (Objects.requireNonNull(returnType.getMethod()).getName().equals("openapiJson")) {
+            return body;
+        }
         if (body instanceof String) {
             return objectMapper.writeValueAsString(Result.success(body));
         }
