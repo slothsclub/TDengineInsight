@@ -1,13 +1,24 @@
 package org.slothsclub.tdengineinsight.bind;
 
-import lombok.Data;
 
-@Data
-public class ResponseCode {
+public enum ResponseCode {
 
-    public static final String SUCCESS = "SUCCESS";
-    public static final String FAILED = "FAILED";
-    public static final String BAD_REQUEST = "BAD_REQUEST";
-    public static final String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";
-    public static final String DATASOURCE_NOT_FOUND = "DATASOURCE_NOT_FOUND";
+    SUCCESS("SUCCESS"),
+    DATASOURCE_NOT_FOUND("Data source not initialized"),
+
+    UNPROCESSABLE_ENTITY("Unprocessable Entity"),
+    BAD_REQUEST("Bad Request"),
+    NOT_FOUND("Not Found"),
+    INTERNAL_SERVER_ERROR("Internal Server Error"),
+    ;
+
+    private final String description;
+
+    ResponseCode(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

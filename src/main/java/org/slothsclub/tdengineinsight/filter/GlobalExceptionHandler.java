@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
     public Result<String> handleNoHandlerFound(NoHandlerFoundException e, WebRequest request) {
-        return Result.fail(HttpStatus.NOT_FOUND.name(), String.format("%s Not Found", request.getContextPath()));
+        return Result.fail(ResponseCode.NOT_FOUND, String.format("%s Not Found", request.getContextPath()));
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining("; "));
-        return Result.fail(HttpStatus.UNPROCESSABLE_ENTITY.name(), errorMessage);
+        return Result.fail(ResponseCode.UNPROCESSABLE_ENTITY, errorMessage);
     }
 
     @ExceptionHandler(DataSourceNotFoundException.class)

@@ -2,6 +2,7 @@ package org.slothsclub.tdengineinsight.event;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.slothsclub.tdengineinsight.config.DynamicDataSource;
 import org.slothsclub.tdengineinsight.service.InitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 
 @Component
@@ -22,17 +24,22 @@ public class ApplicationStartup {
     @Autowired
     InitService initService;
 
+    @Autowired
+    DynamicDataSource dynamicDataSource;
+
     @PostConstruct
     public void initDatabase() {
         String path = String.format("%s/%s", sqliteDataDir, ".initialized");
         if (initialized(path)) {
             log.info("The database is initialized, load the database file from {}", sqliteDataDir);
+            addDefaultDatasource();
             return;
         }
         log.info("Initializing database");
         try {
             initService.init();
             writeCkpt(path);
+            addDefaultDatasource();
             log.info("The database file are stored in {}", path);
         } catch (Exception e) {
             log.error("An exception occurred while initializing the database. Error: {}", e.getMessage());
@@ -49,5 +56,15 @@ public class ApplicationStartup {
         writer.write(new Date(System.currentTimeMillis()).toString());
         writer.flush();
         writer.close();
+    }
+
+    private void addDefaultDatasource() {
+        log.info("Create default datasource...");
+        try {
+            dynamicDataSource.addDataSource("default", dynamicDataSource.defaultDataSource());
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+            System.exit(0);
+        }
     }
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Result<T> {
-    String code;
+    ResponseCode code;
     String message;
 
     T payload;
@@ -14,7 +14,7 @@ public class Result<T> {
         this.ts = System.currentTimeMillis();
     }
 
-    public Result(String code, String message, T payload) {
+    public Result(ResponseCode code, String message, T payload) {
         this.code = code;
         this.message = message;
         this.payload = payload;
@@ -28,7 +28,7 @@ public class Result<T> {
         return resultData;
     }
 
-    public static <T> Result<T> fail(String code, String message) {
+    public static <T> Result<T> fail(ResponseCode code, String message) {
         Result<T> resultData = new Result<>();
         resultData.setCode(code);
         resultData.setMessage(message);

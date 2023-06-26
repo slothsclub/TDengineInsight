@@ -66,7 +66,7 @@ public class DynamicDataSource {
         return dataSources.get(id) != null;
     }
 
-    private DataSource defaultDataSource() {
+    public DataSource defaultDataSource() {
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(String.format("jdbc:sqlite:%s/%s", sqliteDataDir, dbFile));
         dataSource.setDatabaseName(dbName);
