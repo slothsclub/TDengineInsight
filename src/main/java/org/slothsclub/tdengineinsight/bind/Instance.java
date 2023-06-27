@@ -11,6 +11,8 @@ public class Instance {
     @Hidden
     String id;
     @NotBlank
+    String name;
+    @NotBlank
     @Schema(defaultValue = "localhost")
     String host;
     @PositiveOrZero

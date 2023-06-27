@@ -12,8 +12,8 @@ import java.util.List;
 @Component
 public interface InstanceMapper {
     @Insert("INSERT INTO instances" +
-            "(id, host, port, username, password, batchfetch, batchErrorIgnore, httpConnectTimeout, httpSocketTimeout, messageWaitTimeout) " +
-            "VALUES(#{id}, #{host}, #{port}, #{username}, #{password}, #{batchfetch}, #{batchErrorIgnore}, #{httpConnectTimeout}, #{httpSocketTimeout}, #{messageWaitTimeout})")
+            "(id, name, host, port, username, password, batchfetch, batchErrorIgnore, httpConnectTimeout, httpSocketTimeout, messageWaitTimeout) " +
+            "VALUES(#{id}, #{name}, #{host}, #{port}, #{username}, #{password}, #{batchfetch}, #{batchErrorIgnore}, #{httpConnectTimeout}, #{httpSocketTimeout}, #{messageWaitTimeout})")
     int insert(Instance model);
 
     @Select("SELECT * FROM instances")
@@ -23,6 +23,7 @@ public interface InstanceMapper {
     int delete(String id);
 
     @Update("UPDATE instances SET " +
+            "name=#{name}, " +
             "host=#{host}, " +
             "port=#{port}, " +
             "username=#{username}, " +

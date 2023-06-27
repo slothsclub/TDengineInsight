@@ -52,13 +52,12 @@ public class InstanceService extends SqliteService {
         return instanceMapper.delete(id) > 0;
     }
 
-    public boolean createDataSourceIfMissing(String id) {
-        Instance instance = instanceMapper.findOne(id);
+    public boolean createDataSourceIfMissing(Instance instance) {
         if (instance == null) {
             return false;
         }
 
-        if (dynamicDataSource.hasInstance(id)) {
+        if (dynamicDataSource.hasInstance(instance.getId())) {
             return true;
         }
 
@@ -81,7 +80,7 @@ public class InstanceService extends SqliteService {
                     .driverClassName(DynamicDataSource.driverClassName)
                     .url(url)
                     .build();
-            dynamicDataSource.addDataSource(id, dataSource);
+            dynamicDataSource.addDataSource(instance.getId(), dataSource);
             return true;
         } catch (SQLException ex) {
             log.error(ex.getMessage());

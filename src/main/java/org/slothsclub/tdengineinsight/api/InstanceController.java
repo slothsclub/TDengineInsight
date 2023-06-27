@@ -2,6 +2,7 @@ package org.slothsclub.tdengineinsight.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slothsclub.tdengineinsight.bind.Instance;
+import org.slothsclub.tdengineinsight.bind.ResponseCode;
 import org.slothsclub.tdengineinsight.bind.Result;
 import org.slothsclub.tdengineinsight.service.InstanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,16 @@ public class InstanceController {
     }
 
     @PostMapping("/{id}/open")
-    public Result<Boolean> open(@PathVariable String id) {
-        return Result.success(instanceService.createDataSourceIfMissing(id));
+    public Result<Instance> open(@PathVariable String id) {
+        Instance instance = instanceService.detail(id);
+        if (instance == null) {
+            return Result.fail(ResponseCode.BAD_REQUEST, "Instance not found");
+        }
+        boolean created = instanceService.createDataSourceIfMissing(instance);
+        if (!created) {
+            return Result.fail(ResponseCode.INTERNAL_SERVER_ERROR, "Can not create datasource");
+        }
+        return Result.success(instance);
     }
 
     @PutMapping("/{id}")
