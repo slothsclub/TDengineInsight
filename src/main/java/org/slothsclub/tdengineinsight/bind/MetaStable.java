@@ -1,11 +1,13 @@
 package org.slothsclub.tdengineinsight.bind;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.sql.Timestamp;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class MetaStable {
+public class MetaStable extends Meta {
     String stableName;
     String dbName;
     Timestamp createTime;

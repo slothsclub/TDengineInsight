@@ -37,9 +37,9 @@ public class ApplicationStartup {
         }
         log.info("Initializing database");
         try {
+            addDefaultDatasource();
             initService.init();
             writeCkpt(path);
-            addDefaultDatasource();
             log.info("The database file are stored in {}", path);
         } catch (Exception e) {
             log.error("An exception occurred while initializing the database. Error: {}", e.getMessage());

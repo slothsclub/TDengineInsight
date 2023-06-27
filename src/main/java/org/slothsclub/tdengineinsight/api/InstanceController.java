@@ -24,9 +24,10 @@ public class InstanceController {
     }
 
     @PostMapping("")
-    public Result<Boolean> create(@RequestBody @Validated Instance instance) {
+    public Result<Instance> create(@RequestBody @Validated Instance instance) {
         instance.setId(UUID.randomUUID().toString());
-        return Result.success(instanceService.insert(instance));
+        instanceService.insert(instance);
+        return Result.success(instance);
     }
 
     @GetMapping("/{id}")
@@ -40,8 +41,9 @@ public class InstanceController {
     }
 
     @PutMapping("/{id}")
-    public Result<Boolean> update(@PathVariable String id, @RequestBody @Validated Instance instance) {
-        return Result.success(instanceService.update(id, instance));
+    public Result<Instance> update(@PathVariable String id, @RequestBody @Validated Instance instance) {
+        instanceService.update(id, instance);
+        return Result.success(instanceService.detail(id));
     }
 
     @DeleteMapping("/{id}")
