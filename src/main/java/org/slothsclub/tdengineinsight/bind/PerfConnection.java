@@ -1,11 +1,13 @@
 package org.slothsclub.tdengineinsight.bind;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.sql.Timestamp;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class PerfConnection {
+public class PerfConnection extends Perf {
     int connId;
     String user;
     String app;

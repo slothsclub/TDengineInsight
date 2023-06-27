@@ -1,5 +1,7 @@
 package org.slothsclub.tdengineinsight.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.slothsclub.tdengineinsight.bind.Meta;
 import org.slothsclub.tdengineinsight.bind.Result;
@@ -39,6 +41,7 @@ public class MetaController {
     MetaService metaService;
 
     @GetMapping("/basic/{type}")
+    @Parameter(name = "type", schema = @Schema(allowableValues = {"dnodes", "mnodes", "qnodes", "cluster", "databases", "functions", "indexes", "stables", "tables", "tags", "columns", "users", "configs", "dnode_variables", "topics", "subscriptions"}))
     public Result<List<Meta>> basic(@PathVariable String type) {
         String metaTableName = metas.getOrDefault(type, null);
         if (metaTableName == null) {
@@ -48,7 +51,8 @@ public class MetaController {
     }
 
     @GetMapping("/query")
-    public Result<List<Meta>> query(@RequestParam String type, @RequestParam String dbName, @RequestParam String tableName) {
+    @Parameter(name = "type", schema = @Schema(allowableValues = {"stables", "tables", "tags", "columns", "topics"}))
+    public Result<List<Meta>> query(@RequestParam String type, @RequestParam String dbName, @RequestParam(required = false) String tableName) {
         return switch (type) {
             case "stables" -> Result.success(metaService.searchStables(dbName));
             case "tables" -> Result.success(metaService.searchTables(dbName, tableName));
