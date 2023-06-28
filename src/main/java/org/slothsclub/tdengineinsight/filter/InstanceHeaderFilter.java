@@ -27,17 +27,8 @@ public class InstanceHeaderFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String instanceId = httpRequest.getHeader("x-instance-id");
         if (instanceId == null || instanceId.equals("")) {
-            sendError(response, "The required parameter x-instance-id is missing in the header");
-            return;
+            request.getRequestDispatcher("/error/invalid-instance").forward(request, response);
         }
-
         chain.doFilter(request, response);
-    }
-
-    private void sendError(ServletResponse response, String message) throws IOException {
-        HttpServletResponse resp = ((HttpServletResponse) response);
-        resp.setStatus(HttpStatus.BAD_REQUEST.value());
-        resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(objectMapper.writeValueAsString(new Result<String>(ResponseCode.BAD_REQUEST, message, null)));
     }
 }
