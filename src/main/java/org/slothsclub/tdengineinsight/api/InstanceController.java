@@ -42,6 +42,8 @@ public class InstanceController {
         if (instance == null) {
             return Result.fail(ResponseCode.BAD_REQUEST, "Instance not found");
         }
+        instanceService.testConnection(instance);
+
         boolean created = instanceService.createDataSourceIfMissing(instance);
         if (!created) {
             return Result.fail(ResponseCode.INTERNAL_SERVER_ERROR, "Can not create datasource");

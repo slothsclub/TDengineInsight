@@ -7,7 +7,12 @@ import org.slothsclub.tdengineinsight.config.DynamicDataSource;
 import org.slothsclub.tdengineinsight.mapper.InstanceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
@@ -30,6 +35,9 @@ public class InstanceService extends SqliteService {
 
     @Autowired
     DynamicDataSource dynamicDataSource;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     public boolean insert(Instance model) {
         return instanceMapper.insert(model) > 0;
@@ -86,5 +94,16 @@ public class InstanceService extends SqliteService {
             log.error(ex.getMessage());
         }
         return false;
+    }
+
+    public void testConnection(Instance instance) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(instance.getUsername(), instance.getPassword());
+        HttpEntity<String> request = new HttpEntity<String>("SHOW DATABASES", headers);
+
+        String url = String.format("http://%s:%d/rest/sql", instance.getHost(), instance.getPort());
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+        String body = response.getBody();
+        log.debug(body);
     }
 }
