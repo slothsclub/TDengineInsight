@@ -3,6 +3,8 @@ package org.slothsclub.tdengineinsight.bind;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
@@ -17,7 +19,8 @@ public class Instance {
     String host;
     @PositiveOrZero
     @Schema(defaultValue = "6041")
-    int port;
+    @NotNull
+    Integer port;
     @NotBlank
     @Schema(defaultValue = "root")
     String username;

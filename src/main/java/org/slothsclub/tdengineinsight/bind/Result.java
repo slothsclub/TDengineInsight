@@ -34,4 +34,12 @@ public class Result<T> {
         resultData.setMessage(message);
         return resultData;
     }
+
+    public static <T> Result<T> fail(ResponseCode code, String message, T data) {
+        Result<T> resultData = new Result<>();
+        resultData.setCode(code);
+        resultData.setMessage(message);
+        resultData.setPayload(data);
+        return resultData;
+    }
 }

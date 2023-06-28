@@ -3,11 +3,13 @@ package org.slothsclub.tdengineinsight.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.slothsclub.tdengineinsight.bind.ResponseCode;
 import org.slothsclub.tdengineinsight.bind.Result;
+import org.slothsclub.tdengineinsight.bind.ValidationErrors;
 import org.slothsclub.tdengineinsight.exception.DataSourceNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,8 +18,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 
 @ControllerAdvice
@@ -41,13 +44,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     @ResponseBody
-    protected Result<String> handleMethodArgNotValidException(MethodArgumentNotValidException ex, Locale locale) {
-        String errorMessage = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
-                .collect(Collectors.joining("; "));
-        return Result.fail(ResponseCode.UNPROCESSABLE_ENTITY, errorMessage);
+    protected Result<List<ValidationErrors>> handleMethodArgNotValidException(MethodArgumentNotValidException ex, Locale locale) {
+        List<ValidationErrors> errors = new ArrayList<>();
+        for(FieldError err: ex.getBindingResult().getFieldErrors()) {
+            errors.add(new ValidationErrors(err.getField(), err.getDefaultMessage()));
+        }
+        return Result.fail(ResponseCode.UNPROCESSABLE_ENTITY, errors.toString(), errors);
     }
 
     @ExceptionHandler(DataSourceNotFoundException.class)
