@@ -8,9 +8,9 @@ import java.sql.Timestamp;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PerfQuery extends Perf {
-    long killId;
-    int queryId;
-    int connId;
+    String killId;
+    long queryId;
+    long connId;
     String app;
     int pid;
     String user;

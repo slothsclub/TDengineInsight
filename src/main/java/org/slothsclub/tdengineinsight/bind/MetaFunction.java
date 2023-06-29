@@ -1,5 +1,6 @@
 package org.slothsclub.tdengineinsight.bind;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,6 +13,7 @@ public class MetaFunction extends Meta {
     String comment;
     int aggregate;
     String outputType;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Timestamp createTime;
     int codeLen;
     int bufsize;

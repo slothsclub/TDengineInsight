@@ -1,5 +1,6 @@
 package org.slothsclub.tdengineinsight.bind;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,6 +13,7 @@ public class PerfClient extends Perf {
     String ip;
     int pid;
     String name;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Timestamp startTime;
     long insertReq;
     long insertRow;
@@ -22,5 +24,6 @@ public class PerfClient extends Perf {
     long slowQuery;
     long totalReq;
     long currentReq;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Timestamp lastAccess;
 }
