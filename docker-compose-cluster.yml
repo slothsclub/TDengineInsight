@@ -1,0 +1,36 @@
+version: "3"
+services:
+  td-1:
+    image: tdengine/tdengine:3.0.5.0
+    environment:
+      TAOS_FQDN: "td-1"
+      TAOS_FIRST_EP: "td-1"
+    volumes:
+      - taosdata-td1:/var/lib/taos/
+      - taoslog-td1:/var/log/taos/
+    ports:
+      - 36030:6030
+      - 36041:6041
+  td-2:
+    image: tdengine/tdengine:3.0.5.0
+    environment:
+      TAOS_FQDN: "td-2"
+      TAOS_FIRST_EP: "td-1"
+    volumes:
+      - taosdata-td2:/var/lib/taos/
+      - taoslog-td2:/var/log/taos/
+  td-3:
+    image: tdengine/tdengine:3.0.5.0
+    environment:
+      TAOS_FQDN: "td-3"
+      TAOS_FIRST_EP: "td-1"
+    volumes:
+      - taosdata-td3:/var/lib/taos/
+      - taoslog-td3:/var/log/taos/
+volumes:
+  taosdata-td1:
+  taoslog-td1:
+  taosdata-td2:
+  taoslog-td2:
+  taosdata-td3:
+  taoslog-td3:
