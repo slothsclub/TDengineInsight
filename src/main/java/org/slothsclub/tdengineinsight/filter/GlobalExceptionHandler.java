@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,11 +35,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new Result<String>(ResponseCode.INTERNAL_SERVER_ERROR, ex.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
+    @ExceptionHandler({NoHandlerFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
     public Result<String> handleNoHandlerFound(NoHandlerFoundException e, WebRequest request) {
-        return Result.fail(ResponseCode.NOT_FOUND, String.format("%s Not Found", request.getContextPath()));
+        return Result.fail(ResponseCode.NOT_FOUND, e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -46,7 +47,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     protected Result<List<ValidationErrors>> handleMethodArgNotValidException(MethodArgumentNotValidException ex, Locale locale) {
         List<ValidationErrors> errors = new ArrayList<>();
-        for(FieldError err: ex.getBindingResult().getFieldErrors()) {
+        for (FieldError err : ex.getBindingResult().getFieldErrors()) {
             errors.add(new ValidationErrors(err.getField(), err.getDefaultMessage()));
         }
         return Result.fail(ResponseCode.UNPROCESSABLE_ENTITY, errors.toString(), errors);
@@ -57,5 +58,12 @@ public class GlobalExceptionHandler {
     @ResponseBody
     protected Result<String> handleDataSourceNotFoundException(RuntimeException ex, WebRequest request) {
         return Result.fail(ResponseCode.DATASOURCE_NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Result<String> handleMissingRequestParameter(MissingServletRequestParameterException e, WebRequest request) {
+        return Result.fail(ResponseCode.BAD_REQUEST, e.getMessage());
     }
 }
