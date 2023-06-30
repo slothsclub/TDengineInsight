@@ -32,7 +32,7 @@ public interface MetaMapper {
     })
     List<Meta> getMeta(String metaTableName);
 
-    @Select("SELECT '${metaTableName}' as t, * FROM INFORMATION_SCHEMA.${metaTableName} WHERE dbName=#{db}")
+    @Select("SELECT '${metaTableName}' as t, * FROM INFORMATION_SCHEMA.${metaTableName} WHERE db_name=#{db}")
     @TypeDiscriminator(column = "t", javaType = String.class, cases = {
             @Case(value = "INS_STABLES", type = MetaStable.class),
             @Case(value = "INS_TABLES", type = MetaTable.class),
@@ -42,7 +42,7 @@ public interface MetaMapper {
     })
     List<Meta> getMetaByDbName(String metaTableName, String db);
 
-    @Select("SELECT '${metaTableName}' as t, * FROM INFORMATION_SCHEMA.${metaTableName} WHERE dbName=#{db} AND ${field}=#{table}")
+    @Select("SELECT '${metaTableName}' as t, * FROM INFORMATION_SCHEMA.${metaTableName} WHERE db_name=#{db} AND ${field}=#{table}")
     @TypeDiscriminator(column = "t", javaType = String.class, cases = {
             @Case(value = "INS_STABLES", type = MetaStable.class),
             @Case(value = "INS_TABLES", type = MetaTable.class),
@@ -50,4 +50,10 @@ public interface MetaMapper {
             @Case(value = "INS_COLUMNS", type = MetaColumn.class),
     })
     List<Meta> getMetaByDbNameAndTableName(String metaTableName, String db, String table, String field);
+
+    @Select("SELECT * FROM INFORMATION_SCHEMA.${metaTableName} WHERE db_name=#{db} AND type='NORMAL_TABLE'")
+    @TypeDiscriminator(column = "type", javaType = String.class, cases = {
+            @Case(value = "NORMAL_TABLE", type = MetaTable.class),
+    })
+    List<Meta> getNormalTables(String metaTableName, String db);
 }

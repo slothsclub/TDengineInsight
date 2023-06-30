@@ -50,16 +50,24 @@ public class MetaController {
         return Result.success(metaService.basicQuery(metaTableName));
     }
 
-    @GetMapping("/query")
+    @GetMapping("/query/{type}")
     @Parameter(name = "type", schema = @Schema(allowableValues = {"stables", "tables", "tags", "columns", "topics"}))
-    public Result<List<Meta>> query(@RequestParam String type, @RequestParam String dbName, @RequestParam(required = false) String tableName) {
-        return switch (type) {
-            case "stables" -> Result.success(metaService.searchStables(dbName));
-            case "tables" -> Result.success(metaService.searchTables(dbName, tableName));
-            case "tags" -> Result.success(metaService.searchTags(dbName, tableName));
-            case "columns" -> Result.success(metaService.searchColumns(dbName, tableName));
-            case "topics" -> Result.success(metaService.searchTopics(dbName));
-            default -> Result.success(null);
-        };
+    public Result<List<Meta>> query(@PathVariable String type, @RequestParam String dbName, @RequestParam(required = false) String tableName, @RequestParam(required = false, defaultValue = "child") String tableType) {
+        List<Meta> result = null;
+        switch (type) {
+            case "stables" -> result = metaService.searchStables(dbName);
+            case "tables" -> {
+                switch (tableType) {
+                    case "child" -> result = metaService.searchSubTables(dbName, tableName);
+                    case "normal" -> result = metaService.searchNormalTables(dbName);
+                }
+            }
+            case "tags" -> result = metaService.searchTags(dbName, tableName);
+            case "columns" -> result = metaService.searchColumns(dbName, tableName);
+            case "topics" -> result = metaService.searchTopics(dbName);
+            default -> {
+            }
+        }
+        return Result.success(result);
     }
 }

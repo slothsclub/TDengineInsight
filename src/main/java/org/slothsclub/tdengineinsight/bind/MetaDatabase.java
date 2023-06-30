@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MetaDatabase extends Meta{
+public class MetaDatabase extends Meta {
     String name;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Timestamp createTime;
@@ -16,8 +16,8 @@ public class MetaDatabase extends Meta{
     int ntables;
     int replica;
     String strict;
-    int duration;
-    int keep;
+    String duration;
+    String keep;
     int buffer;
     int pagesize;
     int pages;
