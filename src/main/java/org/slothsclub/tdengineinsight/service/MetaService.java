@@ -42,9 +42,6 @@ public class MetaService extends TdengineService {
     }
 
     public List<Meta> searchColumns(String dbName, String tableName) {
-        if (tableName == null) {
-            return metaMapper.getMetaByDbName("INS_COLUMNS", dbName);
-        }
         return metaMapper.getMetaByDbNameAndTableName("INS_COLUMNS", dbName, tableName, "table_name");
     }
 

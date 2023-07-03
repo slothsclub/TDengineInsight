@@ -32,6 +32,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleException(RuntimeException ex, WebRequest request) {
         log.error("Error: " + ex);
+        if (log.isTraceEnabled()) {
+            ex.printStackTrace();
+        }
         return new ResponseEntity<>(new Result<String>(ResponseCode.INTERNAL_SERVER_ERROR, ex.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

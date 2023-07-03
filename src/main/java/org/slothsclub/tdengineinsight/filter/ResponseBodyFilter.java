@@ -3,6 +3,7 @@ package org.slothsclub.tdengineinsight.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.slothsclub.tdengineinsight.bind.RawSqlResult;
 import org.slothsclub.tdengineinsight.bind.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -43,6 +44,9 @@ public class ResponseBodyFilter implements ResponseBodyAdvice<Object> {
             return objectMapper.writeValueAsString(Result.success(body));
         }
         if (body instanceof Result) {
+            if(((Result<?>) body).getPayload() instanceof RawSqlResult) {
+                ((RawSqlResult) ((Result<?>) body).getPayload()).setElapsedTime(timeElapsed);
+            }
             return body;
         }
 

@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Data
 public class PerfQuery extends Perf {
     String killId;
-    long queryId;
+    String queryId;
     long connId;
     String app;
     int pid;
