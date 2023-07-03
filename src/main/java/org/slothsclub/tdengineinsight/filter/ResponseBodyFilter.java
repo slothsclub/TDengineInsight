@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -30,6 +31,11 @@ public class ResponseBodyFilter implements ResponseBodyAdvice<Object> {
     @Override
     @SneakyThrows
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+        ServletServerHttpRequest servletServerRequest = (ServletServerHttpRequest) request;
+        long startTime = (long) servletServerRequest.getServletRequest().getAttribute("start");
+        long timeElapsed = System.currentTimeMillis() - startTime;
+        response.getHeaders().add("Elapsed-Time", String.valueOf(timeElapsed));
+
         if (Objects.requireNonNull(returnType.getMethod()).getName().equals("openapiJson")) {
             return body;
         }
