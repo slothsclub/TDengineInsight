@@ -58,11 +58,17 @@ public class MetaController {
             case "stables" -> result = metaService.searchStables(dbName);
             case "tables" -> {
                 switch (tableType) {
-                    case "child" -> result = metaService.searchSubTables(dbName, tableName);
-                    case "normal" -> result = metaService.searchNormalTables(dbName);
+                    case "childTable" -> result = metaService.searchSubTables(dbName, tableName);
+                    case "normalTable" -> result = metaService.searchNormalTables(dbName);
                 }
             }
-            case "tags" -> result = metaService.searchTags(dbName, tableName);
+            case "tags" -> {
+                switch (tableType) {
+                    case "childTable" -> result = metaService.searchTags(dbName, tableName);
+                    case "normalTable" -> result = metaService.searchTags(dbName, tableName);
+                    case "stable" -> result = metaService.searchStableTags(dbName, tableName);
+                }
+            }
             case "columns" -> result = metaService.searchColumns(dbName, tableName);
             case "topics" -> result = metaService.searchTopics(dbName);
             default -> {
