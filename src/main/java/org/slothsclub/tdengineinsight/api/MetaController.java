@@ -76,4 +76,9 @@ public class MetaController {
         }
         return Result.success(result);
     }
+
+    @GetMapping("/version")
+    public String version() {
+        return metaService.getServerVersion();
+    }
 }

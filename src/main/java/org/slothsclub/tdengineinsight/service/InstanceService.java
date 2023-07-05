@@ -99,7 +99,7 @@ public class InstanceService extends SqliteService {
     public void testConnection(Instance instance) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(instance.getUsername(), instance.getPassword());
-        HttpEntity<String> request = new HttpEntity<String>("SHOW DATABASES", headers);
+        HttpEntity<String> request = new HttpEntity<String>("select server_version()", headers);
 
         String url = String.format("http://%s:%d/rest/sql", instance.getHost(), instance.getPort());
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);

@@ -49,4 +49,8 @@ public class MetaService extends TdengineService {
     public List<Meta> searchTopics(String dbName) {
         return metaMapper.getMetaByDbName("INS_TOPICS", dbName);
     }
+
+    public String getServerVersion() {
+        return metaMapper.getServerVersion();
+    }
 }

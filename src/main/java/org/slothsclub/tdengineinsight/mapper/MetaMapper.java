@@ -62,4 +62,7 @@ public interface MetaMapper {
             @Case(value = "INS_TAGS", type = MetaTag.class),
     })
     List<Meta> getStableTags(String metaTableName, String db, String stableName);
+
+    @Select("SELECT server_version()")
+    String getServerVersion();
 }
