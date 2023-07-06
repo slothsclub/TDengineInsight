@@ -20,6 +20,7 @@ public class ExecSqlService extends TdengineService {
     }
 
     public int count(String sql) {
+        if (sql == null || sql.isEmpty()) return 0;
         return execSqlMapper.count(sql);
     }
 }
