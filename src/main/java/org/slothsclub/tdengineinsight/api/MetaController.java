@@ -69,6 +69,7 @@ public class MetaController {
                     case "stable" -> result = metaService.searchStableTags(dbName, tableName);
                 }
             }
+            case "tag_values" -> result = metaService.searchTagValues(dbName, tableName);
             case "columns" -> result = metaService.searchColumns(dbName, tableName);
             case "topics" -> result = metaService.searchTopics(dbName);
             default -> {

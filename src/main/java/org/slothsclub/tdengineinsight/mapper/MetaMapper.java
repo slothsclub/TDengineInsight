@@ -63,6 +63,12 @@ public interface MetaMapper {
     })
     List<Meta> getStableTags(String metaTableName, String db, String stableName);
 
+    @Select("SELECT DISTINCT '${metaTableName}' as t, tag_name, tag_value FROM INFORMATION_SCHEMA.${metaTableName} WHERE db_name=#{db} AND stable_name=#{stableName}")
+    @TypeDiscriminator(column = "t", javaType = String.class, cases = {
+            @Case(value = "INS_TAGS", type = MetaTag.class),
+    })
+    List<Meta> getTagValues(String metaTableName, String db, String stableName);
+
     @Select("SELECT server_version()")
     String getServerVersion();
 }

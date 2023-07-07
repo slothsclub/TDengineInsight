@@ -42,6 +42,10 @@ public class MetaService extends TdengineService {
         return metaMapper.getStableTags("INS_TAGS", dbName, stableName);
     }
 
+    public List<Meta> searchTagValues(String dbName, String stableName) {
+        return metaMapper.getTagValues("INS_TAGS", dbName, stableName);
+    }
+
     public List<Meta> searchColumns(String dbName, String tableName) {
         return metaMapper.getMetaByDbNameAndTableName("INS_COLUMNS", dbName, tableName, "table_name");
     }
