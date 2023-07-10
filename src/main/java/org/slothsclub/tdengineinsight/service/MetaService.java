@@ -34,6 +34,10 @@ public class MetaService extends TdengineService {
         return metaMapper.getNormalTables("INS_TABLES", dbName);
     }
 
+    public List<Meta> searchChildAndNormalTables(String dbName) {
+        return metaMapper.getChildAndNormalTables("INS_TABLES", dbName);
+    }
+
     public List<Meta> searchTags(String dbName, String stableName) {
         return metaMapper.getMetaByDbNameAndTableName("INS_TAGS", dbName, stableName, "table_name");
     }

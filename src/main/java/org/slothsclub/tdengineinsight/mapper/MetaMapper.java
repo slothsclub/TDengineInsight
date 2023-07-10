@@ -57,6 +57,13 @@ public interface MetaMapper {
     })
     List<Meta> getNormalTables(String metaTableName, String db);
 
+    @Select("SELECT * FROM INFORMATION_SCHEMA.${metaTableName} WHERE db_name=#{db}")
+    @TypeDiscriminator(column = "type", javaType = String.class, cases = {
+            @Case(value = "NORMAL_TABLE", type = MetaTable.class),
+            @Case(value = "CHILD_TABLE", type = MetaTable.class),
+    })
+    List<Meta> getChildAndNormalTables(String metaTableName, String db);
+
     @Select("SELECT DISTINCT '${metaTableName}' as t, tag_name, tag_type FROM INFORMATION_SCHEMA.${metaTableName} WHERE db_name=#{db} AND stable_name=#{stableName}")
     @TypeDiscriminator(column = "t", javaType = String.class, cases = {
             @Case(value = "INS_TAGS", type = MetaTag.class),

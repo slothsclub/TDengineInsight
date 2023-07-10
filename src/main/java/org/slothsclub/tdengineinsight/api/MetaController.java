@@ -60,6 +60,7 @@ public class MetaController {
                 switch (tableType) {
                     case "childTable" -> result = metaService.searchSubTables(dbName, tableName);
                     case "normalTable" -> result = metaService.searchNormalTables(dbName);
+                    case "childAndNormalTable" -> result = metaService.searchChildAndNormalTables(dbName);
                 }
             }
             case "tags" -> {
