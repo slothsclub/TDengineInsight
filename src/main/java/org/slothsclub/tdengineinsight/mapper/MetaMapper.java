@@ -64,11 +64,11 @@ public interface MetaMapper {
     })
     List<Meta> getChildAndNormalTables(String metaTableName, String db);
 
-    @Select("SELECT DISTINCT '${metaTableName}' as t, tag_name, tag_type FROM INFORMATION_SCHEMA.${metaTableName} WHERE db_name=#{db} AND stable_name=#{stableName}")
-    @TypeDiscriminator(column = "t", javaType = String.class, cases = {
-            @Case(value = "INS_TAGS", type = MetaTag.class),
+    @Select("DESCRIBE #{db}.#{stableName}")
+    @TypeDiscriminator(column = "note", javaType = String.class, cases = {
+            @Case(value = "TAG", type = StableTagStruct.class),
     })
-    List<Meta> getStableTags(String metaTableName, String db, String stableName);
+    List<Meta> getStableTags(String db, String stableName);
 
     @Select("SELECT DISTINCT '${metaTableName}' as t, tag_name, tag_value FROM INFORMATION_SCHEMA.${metaTableName} WHERE db_name=#{db} AND stable_name=#{stableName}")
     @TypeDiscriminator(column = "t", javaType = String.class, cases = {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -43,7 +44,7 @@ public class MetaService extends TdengineService {
     }
 
     public List<Meta> searchStableTags(String dbName, String stableName) {
-        return metaMapper.getStableTags("INS_TAGS", dbName, stableName);
+        return metaMapper.getStableTags(dbName, stableName).stream().filter(Objects::nonNull).toList();
     }
 
     public List<Meta> searchTagValues(String dbName, String stableName) {
