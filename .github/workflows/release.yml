@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
       - run: cd web && npm install && VITE_OUT_DIR=../src/main/resources/static VITE_ROUTE_MODE=hash VITE_API_BASE_URL=/api npm run build
 
       - name: Set up JDK 19
