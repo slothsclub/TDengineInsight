@@ -5,6 +5,7 @@ import org.slothsclub.tdengineinsight.bind.RawSqlRequest;
 import org.slothsclub.tdengineinsight.bind.RawSqlResult;
 import org.slothsclub.tdengineinsight.bind.Result;
 import org.slothsclub.tdengineinsight.service.ExecSqlService;
+import org.slothsclub.tdengineinsight.support.V1APIController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/tdengine/exec")
 @Slf4j
+@V1APIController
 public class ExecSqlController {
     @Autowired
     ExecSqlService execSqlService;

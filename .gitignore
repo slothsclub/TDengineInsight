@@ -38,3 +38,5 @@ out/
 
 .initialized
 tdengineinsight.db
+/src/main/resources/static/*
+!/src/main/resources/static/.gitkeep

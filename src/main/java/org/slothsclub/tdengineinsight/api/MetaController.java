@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slothsclub.tdengineinsight.bind.Meta;
 import org.slothsclub.tdengineinsight.bind.Result;
 import org.slothsclub.tdengineinsight.service.MetaService;
+import org.slothsclub.tdengineinsight.support.V1APIController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/tdengine/meta")
 @Slf4j
+@V1APIController
 public class MetaController {
     private final Map<String, String> metas = new HashMap<>() {{
         put("dnodes", "INS_DNODES");

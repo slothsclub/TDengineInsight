@@ -5,6 +5,7 @@ import org.slothsclub.tdengineinsight.bind.Instance;
 import org.slothsclub.tdengineinsight.bind.ResponseCode;
 import org.slothsclub.tdengineinsight.bind.Result;
 import org.slothsclub.tdengineinsight.service.InstanceService;
+import org.slothsclub.tdengineinsight.support.V1APIController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/app/instance")
 @Slf4j
+@V1APIController
 public class InstanceController {
     @Autowired
     InstanceService instanceService;
