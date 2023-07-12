@@ -35,13 +35,14 @@ public class MetaController {
         put("dnode_variables", "INS_DNODE_VARIABLES");
         put("topics", "INS_TOPICS");
         put("subscriptions", "INS_SUBSCRIPTIONS");
+        put("streams", "INS_STREAMS");
     }};
 
     @Autowired
     MetaService metaService;
 
     @GetMapping("/basic/{type}")
-    @Parameter(name = "type", schema = @Schema(allowableValues = {"dnodes", "mnodes", "qnodes", "cluster", "databases", "functions", "indexes", "stables", "tables", "tags", "columns", "users", "configs", "dnode_variables", "topics", "subscriptions"}))
+    @Parameter(name = "type", schema = @Schema(allowableValues = {"dnodes", "mnodes", "qnodes", "cluster", "databases", "functions", "indexes", "stables", "tables", "tags", "columns", "users", "configs", "dnode_variables", "topics", "subscriptions", "streams"}))
     public Result<List<Meta>> basic(@PathVariable String type) {
         String metaTableName = metas.getOrDefault(type, null);
         if (metaTableName == null) {

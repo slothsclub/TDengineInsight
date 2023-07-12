@@ -28,7 +28,8 @@ public interface MetaMapper {
             @Case(value = "INS_CONFIGS", type = MetaConfig.class),
             @Case(value = "INS_DNODE_VARIABLES", type = MetaDnodeVariable.class),
             @Case(value = "INS_TOPICS", type = MetaTopic.class),
-            @Case(value = "INS_SUBSCRIPTIONS", type = MetaSubscription.class)
+            @Case(value = "INS_SUBSCRIPTIONS", type = MetaSubscription.class),
+            @Case(value = "INS_STREAMS", type = MetaStream.class)
     })
     List<Meta> getMeta(String metaTableName);
 

@@ -9,5 +9,7 @@ public class MetaSubscription extends Meta {
     String topicName;
     String consumerGroup;
     int vgroupId;
-    long consumerId;
+    String consumerId;
+    String offset;
+    long rows;
 }
