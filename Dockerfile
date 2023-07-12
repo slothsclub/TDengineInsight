@@ -1,5 +1,5 @@
 FROM openjdk:19-slim-bullseye
-RUN mkdir -p /opt/TDengineInsight/{data,bin}
+RUN mkdir -p /opt/TDengineInsight/data /opt/TDengineInsight/bin
 COPY build/libs/TDengineInsight-*.jar /opt/TDengineInsight/bin/main.jar
 WORKDIR /opt/TDengineInsight
 
