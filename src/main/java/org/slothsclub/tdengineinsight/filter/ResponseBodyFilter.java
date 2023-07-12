@@ -33,18 +33,19 @@ public class ResponseBodyFilter implements ResponseBodyAdvice<Object> {
     @SneakyThrows
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         ServletServerHttpRequest servletServerRequest = (ServletServerHttpRequest) request;
-        long startTime = (long) servletServerRequest.getServletRequest().getAttribute("start");
+        Object startAttr = servletServerRequest.getServletRequest().getAttribute("start");
+        long startTime = !Objects.isNull(startAttr) ? (long) startAttr : 0;
         long timeElapsed = System.currentTimeMillis() - startTime;
         response.getHeaders().add("Elapsed-Time", String.valueOf(timeElapsed));
 
-        if (Objects.requireNonNull(returnType.getMethod()).getName().equals("openapiJson")) {
+        if (!Objects.requireNonNull(returnType.getDeclaringClass()).getName().startsWith("org.slothsclub.tdengineinsight")) {
             return body;
         }
         if (body instanceof String) {
             return objectMapper.writeValueAsString(Result.success(body));
         }
         if (body instanceof Result) {
-            if(((Result<?>) body).getPayload() instanceof RawSqlResult) {
+            if (((Result<?>) body).getPayload() instanceof RawSqlResult) {
                 ((RawSqlResult) ((Result<?>) body).getPayload()).setElapsedTime(timeElapsed);
             }
             return body;

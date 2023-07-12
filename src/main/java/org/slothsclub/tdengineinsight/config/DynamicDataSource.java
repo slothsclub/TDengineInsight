@@ -1,5 +1,8 @@
 package org.slothsclub.tdengineinsight.config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
+@Slf4j
 public class DynamicDataSource {
     @Value("${datasource.sqlite.data.dir}")
     String sqliteDataDir;
@@ -46,6 +50,17 @@ public class DynamicDataSource {
     public void addDataSource(String id, DataSource dataSource) throws SQLException {
         try (Connection c = dataSource.getConnection()) {
             dataSources.put(id, dataSource);
+            multiDataSource.afterPropertiesSet();
+        }
+    }
+
+    public void removeDataSource(String id) throws SQLException {
+        DataSource dataSource = (DataSource) dataSources.get(id);
+        if (dataSource == null) return;
+        try (Connection c = dataSource.getConnection()) {
+            c.close();
+            dataSources.remove(id);
+            log.info("Close datasource: " + id);
             multiDataSource.afterPropertiesSet();
         }
     }

@@ -1,5 +1,8 @@
 package org.slothsclub.tdengineinsight.service;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.slothsclub.tdengineinsight.SqliteService;
 import org.slothsclub.tdengineinsight.bind.Instance;
@@ -38,6 +41,10 @@ public class InstanceService extends SqliteService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    MeterRegistry meterRegistry;
+
 
     public boolean insert(Instance model) {
         return instanceMapper.insert(model) > 0;
@@ -84,16 +91,17 @@ public class InstanceService extends SqliteService {
             });
 
             String url = String.format("jdbc:TAOS-RS://%s:%d/?%s", instance.getHost(), instance.getPort(), String.join("&", args.toArray(new CharSequence[0])));
-            DataSource dataSource = DataSourceBuilder.create()
-                    .driverClassName(DynamicDataSource.driverClassName)
-                    .url(url)
-                    .build();
+            DataSource dataSource = buildDataSource("HikariPool@" + instance.getId(), url);
             dynamicDataSource.addDataSource(instance.getId(), dataSource);
             return true;
         } catch (SQLException ex) {
             log.error(ex.getMessage());
         }
         return false;
+    }
+
+    public void close(String id) throws SQLException {
+        dynamicDataSource.removeDataSource(id);
     }
 
     public void testConnection(Instance instance) {
@@ -105,5 +113,20 @@ public class InstanceService extends SqliteService {
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
         String body = response.getBody();
         log.debug(body);
+    }
+
+    private DataSource buildDataSource(String poolName, String url) {
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setInitializationFailTimeout(1);
+        hikariConfig.setPoolName(poolName);
+        hikariConfig.setMinimumIdle(1);
+        hikariConfig.setMaximumPoolSize(5);
+        hikariConfig.setIdleTimeout(300000);
+        hikariConfig.setMaxLifetime(30000);
+        hikariConfig.setConnectionTimeout(60000);
+        hikariConfig.setDriverClassName(DynamicDataSource.driverClassName);
+        hikariConfig.setJdbcUrl(url);
+        hikariConfig.setMetricRegistry(meterRegistry);
+        return new HikariDataSource(hikariConfig);
     }
 }

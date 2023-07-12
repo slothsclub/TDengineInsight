@@ -51,6 +51,17 @@ public class InstanceController {
         return Result.success(instance);
     }
 
+    @PostMapping("/{id}/close")
+    public Result<Boolean> close(@PathVariable String id) {
+        try {
+            instanceService.close(id);
+            return Result.success(true);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Result.fail(ResponseCode.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public Result<Instance> update(@PathVariable String id, @RequestBody @Validated Instance instance) {
         instanceService.update(id, instance);
