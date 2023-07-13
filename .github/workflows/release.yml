@@ -46,5 +46,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tdengineinsight:${{ github.event.release.tag_name }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tdengineinsight:${{ github.event.release.tag_name }},${{ secrets.DOCKERHUB_USERNAME }}/tdengineinsight:latest
         if: ${{ github.event_name != 'pull_request' }}

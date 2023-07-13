@@ -15,7 +15,7 @@ TDengineInsight is a visual tool that provides capabilities to design, query, an
 docker run -d --name tdengineinsight \
     -p 3210:3210 \
     -v tdengineinsight:/opt/TDengineInsight/data \
-    slothsio/tdengineinsight:1.0.0-rc1
+    slothsio/tdengineinsight:latest
 ```
 Open [http:://localhost:3210](http:://localhost:3210) in your browser
 
@@ -28,7 +28,7 @@ npm install
 VITE_OUT_DIR=../src/main/resources/static VITE_ROUTE_MODE=hash VITE_API_BASE_URL=/api npm run build
 
 cd ..
-./gradle build
+./gradlew build
 docker build .
 ```
 
